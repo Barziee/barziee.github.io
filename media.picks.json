@@ -1,0 +1,93 @@
+{
+  "_comment": [
+    "Segments are taken verbatim from each game's 'Clips to cut' doc in Drive,",
+    "IN THE ORDER THE DOC NUMBERS THEM - that numbering is the intended edit,",
+    "not chronological order, so e.g. OPA's #2 sits later in the source than #1.",
+    "They are encoded as separate clips and played back to back with a",
+    "crossfade, so the card reads as one continuous video.",
+    "Kindred, Acolyte, Dust and Lord of the Board have no doc; their windows",
+    "are sampled and should be replaced if timecodes turn up.",
+    "A segment's src is relative to the Drive Games folder, or an absolute path."
+  ],
+
+  "lord-of-the-board": {
+    "src": "D:/portfolio-media/candidates/backgammon/videoplayback.mp4",
+    "stillsDir": "D:/portfolio-media/candidates/backgammon",
+    "segments": [
+      { "start": "00:00:02", "duration": 5 },
+      { "start": "00:00:08", "duration": 5 },
+      { "start": "00:00:14", "duration": 5 },
+      { "start": "00:00:19", "duration": 5 }
+    ]
+  },
+
+  "opa": {
+    "stillsDir": "D:/portfolio-media/candidates/opa",
+    "segments": [
+      { "src": "OPA/2.MP4", "start": "00:00:12", "duration": 6 },
+      { "src": "OPA/2.MP4", "start": "00:04:52", "duration": 11 },
+      { "src": "OPA/2.MP4", "start": "00:03:45", "duration": 6 },
+      { "src": "OPA/2.MP4", "start": "00:03:55", "duration": 2 },
+      { "src": "OPA/2.MP4", "start": "00:04:06", "duration": 3 },
+      { "src": "OPA/2.MP4", "start": "00:04:15", "duration": 9 },
+      { "src": "OPA/2.MP4", "start": "00:04:36", "duration": 4 },
+      { "src": "OPA/2.MP4", "start": "00:05:04", "duration": 13 },
+      { "src": "OPA/2.MP4", "start": "00:06:14", "duration": 12 },
+      { "src": "OPA/2.MP4", "start": "00:09:59", "duration": 4 },
+      { "src": "OPA/2.MP4", "start": "00:09:25", "duration": 10 },
+      { "src": "OPA/2.MP4", "start": "00:09:35", "duration": 7 },
+      { "src": "OPA/3.MP4", "start": "00:00:12", "duration": 9 },
+      { "src": "OPA/3.MP4", "start": "00:00:45", "duration": 7 },
+      { "src": "OPA/3.MP4", "start": "00:03:29", "duration": 15 },
+      { "src": "OPA/3.MP4", "start": "00:05:47", "duration": 3 }
+    ]
+  },
+
+  "hexa-coin": {
+    "segments": [
+      { "src": "Hexa Coin/1.mp4", "start": "00:00:15", "duration": 6 },
+      { "src": "Hexa Coin/1.mp4", "start": "00:00:36", "duration": 74 },
+      { "src": "Hexa Coin/1.mp4", "start": "00:03:37", "duration": 3 },
+      { "src": "Hexa Coin/2.mp4", "start": "00:00:01", "duration": 3 },
+      { "src": "Hexa Coin/2.mp4", "start": "00:00:06", "duration": 9 }
+    ]
+  },
+
+  "kindred": {
+    "src": "Kindred/Kindred - Gameplay Video - Barzie (1080p, h264).mp4",
+    "segments": [
+      { "start": "00:00:05", "duration": 6 },
+      { "start": "00:00:20", "duration": 6 },
+      { "start": "00:00:35", "duration": 6 },
+      { "start": "00:00:50", "duration": 6 }
+    ]
+  },
+
+  "spades-royale": {
+    "src": "Spades Royale/1.mp4",
+    "segments": [
+      { "start": "00:03:39", "duration": 20 },
+      { "start": "00:04:05", "duration": 6 },
+      { "start": "00:06:50", "duration": 5 },
+      { "start": "00:03:58", "duration": 3 },
+      { "start": "00:09:16", "duration": 4 }
+    ]
+  },
+
+  "acolyte": {
+    "segments": [
+      { "src": "Acolyte/1.mp4", "start": "00:00:03", "duration": 6 },
+      { "src": "Acolyte/2.mp4", "start": "00:00:01", "duration": 6 },
+      { "src": "Acolyte/3.mp4", "start": "00:00:02", "duration": 6 },
+      { "src": "Acolyte/4.mp4", "start": "00:00:05", "duration": 6 }
+    ]
+  },
+
+  "dust-till-gone": {
+    "segments": [
+      { "src": "Dust till' Gone/1.mp4", "start": "00:00:00", "duration": 6 },
+      { "src": "Dust till' Gone/2.mp4", "start": "00:00:02", "duration": 6 },
+      { "src": "Dust till' Gone/3.mp4", "start": "00:00:01", "duration": 6 }
+    ]
+  }
+}

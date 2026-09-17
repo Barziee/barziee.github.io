@@ -1,0 +1,56 @@
+---
+import { site } from "../data/site";
+import Placeholder from "./Placeholder.astro";
+---
+
+<section id="start" class="scroll-mt-24 px-4 pb-10 pt-8 md:pb-14 md:pt-10">
+  <div class="mx-auto flex max-w-xl flex-col items-center text-center">
+    <!-- Ambient, not animated: the avatar hovers through a 3px range while its
+         citrus ring glows, both on the same continuous cycle. Both stop dead
+         under reduced-motion. -->
+    <div
+      class="relative mb-5 h-28 w-28 md:h-36 md:w-36"
+      style="animation: avatar-float var(--dur-breathe) var(--ease-sine) infinite"
+    >
+      <div
+        class="absolute inset-[5px] rounded-full border-2 border-citrus"
+        style="animation: ring-breathe var(--dur-breathe) var(--ease-sine) infinite"
+      ></div>
+      <img
+        src="/media/bar.png"
+        alt={`Illustrated portrait of ${site.name}`}
+        width="144"
+        height="144"
+        class="absolute inset-[9px] h-[calc(100%-18px)] w-[calc(100%-18px)] rounded-full object-cover"
+      />
+    </div>
+
+    <h1 class="font-display text-4xl leading-none md:text-5xl">{site.name}</h1>
+
+    <p class="mt-2 font-display text-base font-bold text-citrus md:text-lg">
+      {site.role}
+    </p>
+
+    {site.employer && <p class="mt-1 text-sm text-ink-3">currently at {site.employer}</p>}
+
+    <div class="mt-5 max-w-prose">
+      {
+        site.about ? (
+          <p class="text-sm leading-relaxed text-ink-2 md:text-base">{site.about}</p>
+        ) : (
+          <Placeholder
+            label="about paragraph — 50–80 words: who he is, what he does in Unity (VFX, animation, tooling), and how he thinks about UX and motion"
+            lines={4}
+          />
+        )
+      }
+    </div>
+
+    <a
+      href="#games"
+      class="pill-solid mt-7 rounded-chip bg-citrus px-6 py-3 font-display text-base font-extrabold !text-on-accent"
+    >
+      &darr; see the games
+    </a>
+  </div>
+</section>

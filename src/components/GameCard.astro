@@ -1,0 +1,563 @@
+---
+import type { Game } from "../data/games";
+import Placeholder from "./Placeholder.astro";
+
+interface Props {
+  game: Game;
+}
+
+const { game } = Astro.props;
+const hasStills = game.stills.length > 0;
+const multi = game.stills.length > 1;
+const hasClips = game.clips.length > 0;
+const first = game.clips[0];
+---
+
+<article
+  class="cabinet group relative flex w-full flex-col overflow-hidden rounded-tile bg-card"
+  data-game-card
+  data-title={game.title}
+  data-clips={JSON.stringify(game.clips.map((c) => `/media/${c.base}.mp4`))}
+>
+  <!-- Media -------------------------------------------------------------
+       Every card uses the same square box and the media is *fitted* inside it,
+       never cropped — the sources run from 9:16 to 4:3, and cropping them to a
+       common shape cut the portrait games in half. A square is the only box
+       that treats both orientations fairly: a 16:9 one squeezed the portrait
+       titles down to a 111px sliver. A blurred, dimmed copy of the same frame
+       fills the leftover space, which is the consistent treatment for vertical
+       footage that the brief asked for. -->
+  <div class="relative aspect-square overflow-hidden bg-page">
+    {
+      hasStills && (
+        <img
+          data-backdrop
+          src={`/media/${game.stills[0]}`}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          class="absolute inset-0 h-full w-full scale-110 object-cover opacity-35 blur-2xl"
+        />
+      )
+    }
+
+    {
+      hasStills ? (
+        game.stills.map((src, i) => (
+          <img
+            src={`/media/${src}`}
+            alt={i === 0 ? `${game.title} screenshot` : ""}
+            aria-hidden={i === 0 ? undefined : "true"}
+            loading="lazy"
+            decoding="async"
+            data-still
+            class="absolute inset-0 h-full w-full object-contain transition-opacity ease-in-out-soft"
+            style={`opacity:${i === 0 ? 1 : 0};transition-duration:var(--dur-crossfade)`}
+          />
+        ))
+      ) : (
+        <div class="absolute inset-0 grid place-items-center p-4">
+          <Placeholder label={`${game.id} — stills`} />
+        </div>
+      )
+    }
+
+    <!-- Two stacked players so one clip can fade into the next. -->
+    {
+      hasClips && (
+        <>
+          <video
+            data-player="a"
+            muted
+            playsinline
+            preload="none"
+            width={first.width}
+            height={first.height}
+            poster={`/media/${game.id}/poster.jpg`}
+            class="pointer-events-none absolute inset-0 h-full w-full object-contain opacity-0 transition-opacity ease-in-out-soft"
+            style="transition-duration:420ms"
+          />
+          <video
+            data-player="b"
+            muted
+            playsinline
+            preload="none"
+            class="pointer-events-none absolute inset-0 h-full w-full object-contain opacity-0 transition-opacity ease-in-out-soft"
+            style="transition-duration:420ms"
+          />
+        </>
+      )
+    }
+
+    <div class="pointer-events-none absolute left-3 top-3">
+      {
+        game.logo ? (
+          <img
+            src={`/media/${game.logo}`}
+            alt={`${game.title} logo`}
+            loading="lazy"
+            data-logo
+            class="h-8 w-auto drop-shadow-lg transition-opacity duration-[var(--dur-base)] ease-out-soft"
+          />
+        ) : (
+          <span class="rounded-chip bg-page/80 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-3 backdrop-blur-sm">
+            {game.title}
+          </span>
+        )
+      }
+    </div>
+
+    {
+      multi && (
+        <div class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[var(--dur-base)] ease-out-soft group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:none)]:opacity-100">
+          <button
+            type="button"
+            data-prev
+            aria-label={`Previous ${game.title} screenshot`}
+            class="pointer-events-auto absolute left-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-citrus !text-on-accent transition-transform duration-[var(--dur-fast)] ease-spring hover:scale-110"
+          >
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+              <path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            data-next
+            aria-label={`Next ${game.title} screenshot`}
+            class="pointer-events-auto absolute right-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-citrus !text-on-accent transition-transform duration-[var(--dur-fast)] ease-spring hover:scale-110"
+          >
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="pointer-events-auto absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1">
+            {game.stills.map((_, i) => (
+              <button
+                type="button"
+                data-dot
+                data-index={i}
+                aria-label={`Screenshot ${i + 1} of ${game.stills.length}`}
+                class="group/dot grid h-6 w-6 place-items-center"
+              >
+                <span class="h-2.5 w-2.5 rounded-full bg-ink-3 transition-all duration-[var(--dur-fast)] ease-out-soft group-aria-[current=true]/dot:w-6 group-aria-[current=true]/dot:bg-citrus" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    {
+      hasClips && (
+        <button
+          type="button"
+          data-play
+          aria-pressed="false"
+          class="absolute bottom-3 right-3 z-10 flex min-h-11 items-center gap-1.5 rounded-chip bg-citrus px-4 py-2.5 text-xs font-bold !text-on-accent transition-transform duration-[var(--dur-fast)] ease-spring hover:scale-105"
+        >
+          <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+            <path data-play-icon d="M8 5v14l11-7z" />
+          </svg>
+          <span data-play-label>play</span>
+        </button>
+      )
+    }
+
+    <span class="sr-only" aria-live="polite" data-status></span>
+  </div>
+
+  <!-- Body -------------------------------------------------------------- -->
+  <div class="flex flex-1 flex-col gap-3 p-5">
+    <div class="flex items-start justify-between gap-3">
+      <h3 class="font-display text-xl leading-tight">{game.title}</h3>
+      <button
+        type="button"
+        data-expand
+        aria-label={`More about ${game.title}`}
+        class="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-section text-citrus transition-transform duration-[var(--dur-base)] ease-spring hover:-translate-y-0.5"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M8 16 16 8M10 8h6v6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+
+    {
+      game.description ? (
+        <p class="line-clamp-3 text-sm leading-relaxed text-ink-2">{game.description}</p>
+      ) : (
+        <Placeholder label="what this game is" lines={3} />
+      )
+    }
+
+    {
+      game.context ? (
+        <span class="mt-auto self-start rounded-chip bg-section px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-3">
+          {game.context}
+        </span>
+      ) : (
+        <Placeholder label="context marker" />
+      )
+    }
+  </div>
+</article>
+
+<dialog
+  data-sheet={game.id}
+  class="m-auto w-[min(92vw,34rem)] rounded-sheet bg-card p-0 text-ink backdrop:bg-black/[.35] backdrop:backdrop-blur-sm"
+>
+  <div class="p-6">
+    <h3 class="font-display text-2xl">{game.title}</h3>
+
+    {
+      game.context && (
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="rounded-chip bg-section px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink-3">
+            {game.context}
+          </span>
+        </div>
+      )
+    }
+
+    <div class="mt-4">
+      {
+        game.description ? (
+          <p class="text-sm leading-relaxed text-ink-2">{game.description}</p>
+        ) : (
+          <Placeholder label="what this game is" lines={3} />
+        )
+      }
+    </div>
+
+    <div class="mt-6 flex items-center gap-3">
+      {
+        game.link && (
+          <a
+            href={game.link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pill-solid rounded-chip bg-citrus px-5 py-2.5 font-display text-sm font-extrabold !text-on-accent"
+          >
+            {game.link.label}
+          </a>
+        )
+      }
+      <button
+        type="button"
+        data-close
+        aria-label="Close"
+        class="ml-auto grid h-11 w-11 place-items-center rounded-full bg-section text-ink-2 transition-transform duration-[var(--dur-fast)] ease-spring hover:scale-110"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  dialog[open] {
+    animation: sheet-in var(--dur-enter) var(--ease-spring);
+  }
+  dialog[open]::backdrop {
+    animation: backdrop-in var(--dur-backdrop) var(--ease-out-soft);
+  }
+  @keyframes sheet-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Cabinet tile behaviour:
+   *   at rest   — one static screenshot, nothing moving
+   *   on hover  — steps through the screenshots
+   *   on press  — plays the game's clips back to back, crossfading between them
+   *   always    — arrows, dots and arrow keys step manually
+   *
+   * Two <video> elements alternate so the next clip is already decoding before
+   * the current one ends; the handover is an opacity crossfade rather than a
+   * cut, which is what makes a set of short clips read as one continuous reel.
+   */
+  const HOVER_STEP = 3200;
+  const CROSSFADE = 420;
+
+  /** Every card on the page, so only one reel can run at a time — pressing a
+   *  new card returns the previous one to its default screenshot. */
+  const allCards: { el: HTMLElement; reset: () => void }[] = [];
+
+  const motionOff = () =>
+    document.documentElement.dataset.motion === "off" ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-game-card]").forEach((card) => {
+    const stills = [...card.querySelectorAll<HTMLImageElement>("[data-still]")];
+    const backdrop = card.querySelector<HTMLImageElement>("[data-backdrop]");
+    const dots = [...card.querySelectorAll<HTMLButtonElement>("[data-dot]")];
+    const logo = card.querySelector<HTMLImageElement>("[data-logo]");
+    const playBtn = card.querySelector<HTMLButtonElement>("[data-play]");
+    const playLabel = card.querySelector<HTMLElement>("[data-play-label]");
+    const playIcon = card.querySelector<SVGPathElement>("[data-play-icon]");
+    const status = card.querySelector<HTMLElement>("[data-status]");
+    const title = card.dataset.title ?? "";
+
+    const players = [
+      card.querySelector<HTMLVideoElement>('[data-player="a"]'),
+      card.querySelector<HTMLVideoElement>('[data-player="b"]'),
+    ].filter(Boolean) as HTMLVideoElement[];
+
+    let srcs: string[] = [];
+    try {
+      srcs = JSON.parse(card.dataset.clips ?? "[]");
+    } catch {
+      srcs = [];
+    }
+
+    if (!stills.length && !srcs.length) return;
+
+    let index = 0;
+    let hoverTimer: number | undefined;
+    let playing = false;
+    let clipIndex = 0;
+    let active = 0;
+    let handedOver = false;
+
+    const show = (n: number, announce = false) => {
+      index = (n + stills.length) % stills.length;
+      stills.forEach((s, i) => (s.style.opacity = i === index ? "1" : "0"));
+      dots.forEach((d, i) => d.setAttribute("aria-current", String(i === index)));
+      if (backdrop) backdrop.src = stills[index].src;
+      if (announce && status) {
+        status.textContent = `${title}, screenshot ${index + 1} of ${stills.length}`;
+      }
+    };
+
+    const startHover = () => {
+      if (hoverTimer || playing || stills.length < 2 || motionOff()) return;
+      hoverTimer = window.setInterval(() => show(index + 1), HOVER_STEP);
+    };
+    const stopHover = () => {
+      clearInterval(hoverTimer);
+      hoverTimer = undefined;
+    };
+
+    const setPlayUi = (on: boolean) => {
+      playBtn?.setAttribute("aria-pressed", String(on));
+      if (playLabel) playLabel.textContent = on ? "stop" : "play";
+      playIcon?.setAttribute("d", on ? "M7 7h10v10H7z" : "M8 5v14l11-7z");
+    };
+
+    /** Load a clip into the given player and return once it can play. */
+    const load = (p: HTMLVideoElement, src: string) =>
+      new Promise<void>((resolve) => {
+        if (p.getAttribute("src") === src) return resolve();
+        p.setAttribute("src", src);
+        p.load();
+        p.addEventListener("canplay", () => resolve(), { once: true });
+        // Never hang the reel on a clip that refuses to load.
+        setTimeout(resolve, 4000);
+      });
+
+    const playFrom = async (n: number) => {
+      if (!players.length || !srcs.length) return;
+      clipIndex = n % srcs.length;
+      handedOver = false;
+      const p = players[active];
+      await load(p, srcs[clipIndex]);
+      if (!playing) return;
+      p.currentTime = 0;
+      p.style.opacity = "1";
+      players[1 - active] && (players[1 - active].style.opacity = "0");
+      p.play().catch(() => stopClips());
+      // Warm the other player with the next clip while this one runs.
+      if (players[1] && srcs.length > 1) {
+        load(players[1 - active], srcs[(clipIndex + 1) % srcs.length]);
+      }
+    };
+
+    /** Start the next clip slightly before this one ends and crossfade over. */
+    const onTick = async () => {
+      if (!playing || handedOver || players.length < 2 || srcs.length < 2) return;
+      const cur = players[active];
+      if (!cur.duration || Number.isNaN(cur.duration)) return;
+      if (cur.duration - cur.currentTime > CROSSFADE / 1000) return;
+
+      handedOver = true;
+      const nextIdx = (clipIndex + 1) % srcs.length;
+      const nxt = players[1 - active];
+      await load(nxt, srcs[nextIdx]);
+      if (!playing) return;
+
+      nxt.currentTime = 0;
+      await nxt.play().catch(() => {});
+      nxt.style.opacity = "1";
+      cur.style.opacity = "0";
+
+      active = 1 - active;
+      clipIndex = nextIdx;
+      handedOver = false;
+      window.setTimeout(() => {
+        if (playing) cur.pause();
+      }, CROSSFADE);
+      if (srcs.length > 2) load(players[1 - active], srcs[(nextIdx + 1) % srcs.length]);
+    };
+
+    players.forEach((p) => {
+      p.addEventListener("timeupdate", onTick);
+      // Single-clip games just loop.
+      p.addEventListener("ended", () => {
+        if (playing && srcs.length === 1) {
+          p.currentTime = 0;
+          p.play().catch(() => {});
+        }
+      });
+    });
+
+    const startClips = () => {
+      if (!srcs.length || playing) return;
+      // Only one card plays at a time.
+      allCards.forEach((c) => c.el !== card && c.reset());
+      stopHover();
+      playing = true;
+      if (logo) logo.style.opacity = "0";
+      setPlayUi(true);
+      if (status) status.textContent = `${title} gameplay playing`;
+      playFrom(0);
+    };
+
+    const stopClips = () => {
+      playing = false;
+      players.forEach((p) => {
+        p.pause();
+        p.style.opacity = "0";
+      });
+      if (logo) logo.style.opacity = "";
+      setPlayUi(false);
+    };
+
+    const toggleClips = () => (playing ? stopClips() : startClips());
+
+    card.addEventListener("pointerenter", startHover);
+    card.addEventListener("pointerleave", () => {
+      stopHover();
+      stopClips();
+    });
+
+    card.querySelector("[data-prev]")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stopHover();
+      show(index - 1, true);
+    });
+    card.querySelector("[data-next]")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      stopHover();
+      show(index + 1, true);
+    });
+    dots.forEach((d) =>
+      d.addEventListener("click", (e) => {
+        e.stopPropagation();
+        stopHover();
+        show(Number(d.dataset.index), true);
+      }),
+    );
+
+    playBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleClips();
+    });
+
+    card.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a, button")) return;
+      if (srcs.length) toggleClips();
+    });
+
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        stopHover();
+        show(index - 1, true);
+        e.preventDefault();
+      } else if (e.key === "ArrowRight") {
+        stopHover();
+        show(index + 1, true);
+        e.preventDefault();
+      } else if (e.key === "Escape" && playing) {
+        stopClips();
+      }
+    });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) {
+            stopHover();
+            stopClips();
+          }
+        },
+        { rootMargin: "150px" },
+      ).observe(card);
+    }
+
+    show(0);
+    setPlayUi(false);
+    /** Back to the default screenshot, whatever the card was doing. */
+    const reset = () => {
+      stopHover();
+      stopClips();
+      show(0);
+    };
+
+    allCards.push({ el: card, reset });
+
+    (card as any).__card = {
+      show,
+      startHover,
+      stopHover,
+      startClips,
+      stopClips,
+      reset,
+      state: () => ({ index, playing, clipIndex, hovering: Boolean(hoverTimer) }),
+    };
+  });
+
+  // --- Expanded sheets ------------------------------------------------------
+  document.querySelectorAll<HTMLElement>("[data-game-card]").forEach((card) => {
+    const sheet = card.nextElementSibling as HTMLDialogElement | null;
+    if (!sheet || sheet.tagName !== "DIALOG") return;
+
+    card.querySelector("[data-expand]")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      sheet.showModal();
+    });
+    sheet.querySelector("[data-close]")?.addEventListener("click", () => sheet.close());
+    sheet.addEventListener("click", (e) => {
+      if (e.target === sheet) sheet.close();
+    });
+  });
+
+  new MutationObserver(() => {
+    if (document.documentElement.dataset.motion === "off") {
+      document.querySelectorAll<HTMLElement>("[data-game-card]").forEach((c) => {
+        (c as any).__card?.stopHover();
+        (c as any).__card?.stopClips();
+      });
+    }
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-motion"] });
+</script>

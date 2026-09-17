@@ -1,0 +1,278 @@
+{
+  "lord-of-the-board": {
+    "stills": [
+      "lord-of-the-board/still-1.webp",
+      "lord-of-the-board/still-2.webp",
+      "lord-of-the-board/still-3.webp",
+      "lord-of-the-board/still-4.webp"
+    ],
+    "clips": [
+      {
+        "base": "lord-of-the-board/clip-1",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "lord-of-the-board/clip-2",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "lord-of-the-board/clip-3",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "lord-of-the-board/clip-4",
+        "width": 900,
+        "height": 506
+      }
+    ]
+  },
+  "opa": {
+    "stills": [
+      "opa/still-1.webp",
+      "opa/still-2.webp",
+      "opa/still-3.webp",
+      "opa/still-4.webp"
+    ],
+    "clips": [
+      {
+        "base": "opa/clip-1",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-2",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-3",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-4",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-5",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-6",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-7",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-8",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-9",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-10",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-11",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-12",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-13",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-14",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-15",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "opa/clip-16",
+        "width": 416,
+        "height": 900
+      }
+    ]
+  },
+  "hexa-coin": {
+    "stills": [
+      "hexa-coin/still-1.webp",
+      "hexa-coin/still-2.webp",
+      "hexa-coin/still-3.webp",
+      "hexa-coin/still-4.webp",
+      "hexa-coin/still-5.webp"
+    ],
+    "clips": [
+      {
+        "base": "hexa-coin/clip-1",
+        "width": 404,
+        "height": 900
+      },
+      {
+        "base": "hexa-coin/clip-2",
+        "width": 404,
+        "height": 900
+      },
+      {
+        "base": "hexa-coin/clip-3",
+        "width": 404,
+        "height": 900
+      },
+      {
+        "base": "hexa-coin/clip-4",
+        "width": 416,
+        "height": 900
+      },
+      {
+        "base": "hexa-coin/clip-5",
+        "width": 416,
+        "height": 900
+      }
+    ]
+  },
+  "kindred": {
+    "stills": [
+      "kindred/still-1.webp",
+      "kindred/still-2.webp",
+      "kindred/still-3.webp",
+      "kindred/still-4.webp"
+    ],
+    "clips": [
+      {
+        "base": "kindred/clip-1",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "kindred/clip-2",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "kindred/clip-3",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "kindred/clip-4",
+        "width": 900,
+        "height": 506
+      }
+    ]
+  },
+  "spades-royale": {
+    "stills": [
+      "spades-royale/still-1.webp",
+      "spades-royale/still-2.webp",
+      "spades-royale/still-3.webp",
+      "spades-royale/still-4.webp",
+      "spades-royale/still-5.webp"
+    ],
+    "clips": [
+      {
+        "base": "spades-royale/clip-1",
+        "width": 900,
+        "height": 676
+      },
+      {
+        "base": "spades-royale/clip-2",
+        "width": 900,
+        "height": 676
+      },
+      {
+        "base": "spades-royale/clip-3",
+        "width": 900,
+        "height": 676
+      },
+      {
+        "base": "spades-royale/clip-4",
+        "width": 900,
+        "height": 676
+      },
+      {
+        "base": "spades-royale/clip-5",
+        "width": 900,
+        "height": 676
+      }
+    ]
+  },
+  "acolyte": {
+    "stills": [
+      "acolyte/still-1.webp",
+      "acolyte/still-2.webp",
+      "acolyte/still-3.webp",
+      "acolyte/still-4.webp"
+    ],
+    "clips": [
+      {
+        "base": "acolyte/clip-1",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "acolyte/clip-2",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "acolyte/clip-3",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "acolyte/clip-4",
+        "width": 900,
+        "height": 506
+      }
+    ]
+  },
+  "dust-till-gone": {
+    "stills": [
+      "dust-till-gone/still-1.webp",
+      "dust-till-gone/still-2.webp",
+      "dust-till-gone/still-3.webp"
+    ],
+    "clips": [
+      {
+        "base": "dust-till-gone/clip-1",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "dust-till-gone/clip-2",
+        "width": 900,
+        "height": 506
+      },
+      {
+        "base": "dust-till-gone/clip-3",
+        "width": 900,
+        "height": 506
+      }
+    ]
+  }
+}

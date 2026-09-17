@@ -1,0 +1,24 @@
+---
+import { games } from "../data/games";
+import GameCard from "./GameCard.astro";
+
+// Every card is the same size and the media is fitted inside a uniform 16:9
+// box, so the grid stays regular whatever shape the footage is. A centred
+// flex-wrap keeps an incomplete last row centred rather than hanging left.
+---
+
+<section id="games" class="scroll-mt-24 bg-section px-4 py-14 md:py-20">
+  <div class="mx-auto max-w-6xl">
+    <h2 class="text-center font-display text-4xl md:text-5xl">Games</h2>
+
+    <ul class="mt-10 flex flex-wrap justify-center gap-6">
+      {
+        games.map((game) => (
+          <li class="flex w-full max-w-[22rem] sm:w-[22rem]">
+            <GameCard game={game} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

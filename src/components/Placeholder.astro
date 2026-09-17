@@ -1,0 +1,21 @@
+---
+/**
+ * Marks content Bar hasn't supplied yet. Deliberately loud — an unfilled slot
+ * must be impossible to mistake for finished copy, and `npm run check:content`
+ * reports every one that remains.
+ */
+interface Props {
+  label: string;
+  lines?: number;
+}
+
+const { label, lines = 1 } = Astro.props;
+---
+
+<span
+  class="inline-block w-full rounded-lg border border-dashed border-citrus/50 bg-citrus/5 px-2.5 py-1.5 font-mono text-[11px] uppercase leading-snug tracking-wide text-citrus/90"
+  style={`min-height:${lines * 1.35}rem`}
+  data-placeholder={label}
+>
+  [{label}]
+</span>

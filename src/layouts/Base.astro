@@ -1,0 +1,57 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#0D1117" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap"
+    />
+
+    <!-- Applied before first paint so someone who turned motion off never sees
+         a frame of it on the way back in. -->
+    <script is:inline>
+      try {
+        if (localStorage.getItem("motion") === "off") {
+          document.documentElement.dataset.motion = "off";
+        }
+      } catch (e) {
+        /* storage blocked — motion stays on, the safe default */
+      }
+    </script>
+  </head>
+
+  <body>
+    <a
+      href="#start"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-chip focus:bg-citrus focus:px-4 focus:py-2 focus:font-semibold focus:text-on-accent"
+    >
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>

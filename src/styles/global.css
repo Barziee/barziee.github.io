@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   INK & CITRUS — palette 3d from the Claude Design board.
+
+   One primary accent (citrus) carries every interactive surface, so the games
+   grid can't turn into confetti. Every accent takes near-black text, never
+   white. Sky is held in reserve as the secondary.
+
+   Motion tokens are not decoration here: the brief is "no linear easing
+   anywhere — the motion spec is the portfolio piece".
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Surfaces */
+  --color-page: #0d1117;
+  --color-section: #141c26;
+  --color-card: #1d2732;
+  --color-line: #263243;
+
+  /* Text */
+  --color-ink: #f0f4f8;
+  --color-ink-2: #c3ceda;
+  --color-ink-3: #8698ab;
+  /* Text that sits ON an accent. Never white. */
+  --color-on-accent: #0d1117;
+
+  /* Accents */
+  --color-citrus: #ffd24a;
+  --color-citrus-hi: #ffe28c;
+  --color-sky: #63c8ff;
+
+  --radius-chip: 999px;
+  --radius-tile: 18px;
+  --radius-sheet: 22px;
+
+  /* Fonts */
+  --font-display: "Baloo 2", system-ui, cursive;
+  --font-body: "Figtree", system-ui, sans-serif;
+
+  /* Easing — nothing is linear. */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Continuous loops only: never parks at the extremes. */
+  --ease-sine: cubic-bezier(0.37, 0, 0.63, 1);
+
+  /* Durations. Exits are always faster than entrances. */
+  --dur-press: 90ms;
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-enter: 420ms;
+  --dur-exit: 260ms;
+  --dur-crossfade: 900ms;
+  --dur-backdrop: 240ms;
+  /* The avatar hovers on a continuous loop — ambient, not animation. */
+  --dur-breathe: 4.5s;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  background: var(--color-page);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--color-citrus);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-citrus-hi);
+}
+
+/* A cabinet tile is a solid object: it has a bottom edge, and pressing it
+   drives the whole tile down onto that edge rather than fading it. */
+.cabinet {
+  box-shadow: 0 4px 0 0 #0a0e14;
+  transition:
+    transform var(--dur-base) var(--ease-spring),
+    box-shadow var(--dur-base) var(--ease-spring);
+}
+.cabinet:hover,
+.cabinet:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 0 #0a0e14;
+}
+/* A hint of give, not a slam. */
+.cabinet:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 0 0 #0a0e14;
+  transition-duration: var(--dur-press);
+}
+
+/* Same object logic for pill buttons. */
+.pill-solid {
+  box-shadow: 0 4px 0 0 #a8842a;
+  transition:
+    transform var(--dur-base) var(--ease-spring),
+    box-shadow var(--dur-base) var(--ease-spring);
+}
+.pill-solid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 0 #a8842a;
+}
+.pill-solid:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 0 #a8842a;
+  transition-duration: var(--dur-press);
+}
+
+/* The avatar drifts a few pixels and its ring glows, both on the same long
+   eased cycle. Nothing travels around the frame: a rotating element pulls the
+   eye onto itself and away from the face it is supposed to be framing. */
+@keyframes avatar-float {
+  0%,
+  100% {
+    transform: translateY(1.5px);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes ring-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 210 74 / 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 1px rgb(255 210 74 / 0.18);
+  }
+}
+
+/* Focus must survive over bright game art, so the ring carries its own dark
+   halo rather than relying on the page behind it. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-citrus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgb(0 0 0 / 0.8);
+  border-radius: var(--radius-chip);
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion. Two routes in: the OS setting, and the in-page control which
+   sets data-motion="off". The starburst stops dead; nothing auto-advances.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-play-state: paused !important;
+  transition-duration: 1ms !important;
+}
